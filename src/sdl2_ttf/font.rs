@@ -5,14 +5,12 @@ use std::error;
 use std::error::Error;
 use std::ffi::NulError;
 use std::fmt;
-use sdl2::ErrorMessage;
 use sdl2::surface::Surface;
 use sdl2_sys::surface::SDL_Surface;
 use sdl2::get_error;
 use sdl2::pixels;
 use sdl2::pixels::Color;
 use sdl2_sys::pixels::SDL_Color;
-use sdl2::SdlResult;
 use ffi;
 
 /// Converts a rust-SDL2 color to its C ffi representation.
@@ -64,7 +62,7 @@ pub enum FontError {
     /// A Latin-1 encoded byte string is invalid.
     InvalidLatin1Text(NulError),
     /// A SDL2-related error occured.
-    SdlError(ErrorMessage),
+    SdlError(String),
 }
 
 impl error::Error for FontError {
@@ -74,7 +72,7 @@ impl error::Error for FontError {
                 error.description()
             },
             &FontError::SdlError(ref message) => {
-                message.description()
+                message
             },
         }
     }
@@ -266,7 +264,7 @@ impl Drop for Font {
 }
 
 /// Internally used to load a font (for internal visibility).
-pub fn internal_load_font(path: &Path, ptsize: u16) -> SdlResult<Font> {
+pub fn internal_load_font(path: &Path, ptsize: u16) -> Result<Font, String> {
     unsafe {
         let cstring = CString::new(path.to_str().unwrap()).unwrap();
         let raw = ffi::TTF_OpenFont(cstring.as_ptr(), ptsize as c_int);
@@ -286,7 +284,7 @@ pub fn internal_load_font_from_ll(raw: *const ffi::TTF_Font, owned: bool)
 
 /// Internally used to load a font (for internal visibility).
 pub fn internal_load_font_at_index(path: &Path, index: u32, ptsize: u16)
-        -> SdlResult<Font> {
+        -> Result<Font, String> {
     unsafe {
         let cstring = CString::new(path.to_str().unwrap().as_bytes())
             .unwrap();

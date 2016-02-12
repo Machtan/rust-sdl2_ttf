@@ -7,7 +7,6 @@ use std::path::Path;
 use sdl2::get_error;
 use sdl2::rwops::RWops;
 use sdl2::version::Version;
-use sdl2::SdlResult;
 
 use font::{
     internal_load_font, 
@@ -31,21 +30,22 @@ impl Drop for Sdl2TtfContext {
 
 impl Sdl2TtfContext {
     /// Loads a font from the given file with the given size in points.
-    pub fn load_font(&self, path: &Path, point_size: u16) -> SdlResult<Font> {
+    pub fn load_font(&self, path: &Path, point_size: u16)
+            -> Result<Font, String> {
         internal_load_font(path, point_size)
     }
     
     /// Loads the font at the given index of the file, with the given 
     /// size in points. 
     pub fn load_font_at_index(&self, path: &Path, index: u32, point_size: u16)
-            -> SdlResult<Font> {
+            -> Result<Font, String> {
         internal_load_font_at_index(path, index, point_size)
     }
     
     /// Loads a font from the given SDL2 rwops object with the given size in
     /// points.
     pub fn load_font_from_rwops(&self, rwops: RWops, point_size: u16) 
-            -> SdlResult<Font> {
+            -> Result<Font, String> {
         let raw = unsafe {
             ffi::TTF_OpenFontRW(rwops.raw(), 0, point_size as c_int)
         };
@@ -59,7 +59,8 @@ impl Sdl2TtfContext {
     /// Loads the font at the given index of the SDL2 rwops object with
     /// the given size in points.
     pub fn load_font_at_index_from_rwops(&self, rwops: RWops, index: u32, 
-            point_size: u16) -> SdlResult<Font> {
+            point_size: u16) 
+            -> Result<Font, String> {
         let raw = unsafe {
             ffi::TTF_OpenFontIndexRW(rwops.raw(), 0, point_size as c_int, 
                 index as c_long)
