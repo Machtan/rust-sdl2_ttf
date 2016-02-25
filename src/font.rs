@@ -460,10 +460,11 @@ impl Font {
         }
     }
     
-    /// Returns the recommended line spacing for text rendered with this font.
-    pub fn recommended_line_spacing(&self) -> i32 {
+    /// Returns the recommended pixel height of a line of text rendered with
+    /// this font.
+    pub fn recommended_line_height(&self) -> u32 {
         unsafe {
-            ffi::TTF_FontLineSkip(self.raw) as i32
+            ffi::TTF_FontLineSkip(self.raw) as u32
         }
     }
     

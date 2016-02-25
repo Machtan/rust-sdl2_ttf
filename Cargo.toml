@@ -1,24 +1,14 @@
 [package]
-name = "sdl2_ttf"
-description = "SDL2_ttf bindings for Rust"
-repository = "https://github.com/andelf/rust-sdl2_ttf"
-version = "0.14.0"
-license = "MIT"
-readme = "README.md"
 authors = ["ShuYu Wang <andelf@gmail.com>"]
+description = "SDL2_ttf bindings for Rust"
 keywords = ["SDL", "SDL2", "windowing", "graphics", "font"]
-
-[lib]
+license = "MIT"
 name = "sdl2_ttf"
-path = "src/sdl2_ttf/lib.rs"
+readme = "README.md"
+repository = "https://github.com/andelf/rust-sdl2_ttf"
+version = "0.15.0"
 
 [dependencies]
 bitflags = "0.4"
-sdl2 = "0.13.0"
+sdl2 = "0.15.0"
 sdl2-sys = "0.8.0"
-
-# [dependencies.sdl2]
-# git = "https://github.com/AngryLawyer/rust-sdl2/"
-
-# [dependencies.sdl2-sys]
-# git = "https://github.com/AngryLawyer/rust-sdl2/"
